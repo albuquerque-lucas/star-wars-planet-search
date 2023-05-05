@@ -1,4 +1,4 @@
-.filter-form{
+.filter-form {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -22,12 +22,12 @@
   border: 2px solid white;
   color: white;
   font-weight: 700;
-  outline: none;
   margin-top: 0.5rem;
+  outline: none;
   padding: 0.5rem 1rem;
 }
 
-.other-filters{
+.other-filters {
   align-items: center;
   display: flex;
   height: 10vh;
