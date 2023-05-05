@@ -1,0 +1,36 @@
+.planet-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin: 20px 0;
+}
+
+.planet-table th,
+.planet-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  max-width: 300px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.planet-table th a,
+.planet-table td a {
+  color: white;
+  text-decoration: none;
+}
+
+.planet-table th {
+  background-color: #333;
+  font-weight: bold;
+  text-align: left;
+}
+
+.planet-table tbody tr:nth-child(even) {
+  background-color: #333;
+}
+
+.planet-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
