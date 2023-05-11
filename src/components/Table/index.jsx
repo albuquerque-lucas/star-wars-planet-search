@@ -6,6 +6,7 @@ function Table() {
   const { filteredData, isLoading, filterByName, nameValue } = useContext(DataContext);
   const headerItems = filteredData.length > 0
     ? Object.keys(filteredData[0]).filter((item) => item !== 'residents') : [];
+  console.log(headerItems);
   const nameFiltered = filterByName(nameValue);
   const filteredDisplay = nameFiltered.map((item, index) => (
     <tr key={ index }>

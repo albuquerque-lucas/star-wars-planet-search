@@ -11,6 +11,14 @@ function DataProvider({ children }) {
   const [comparison, setComparison] = useState('maior que');
   const [filterValue, setFilterValue] = useState(0);
   const [filters, setFilters] = useState([]);
+  const columnsToFilter = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+  const [availableColumns, setAvailableColumns] = useState(columnsToFilter);
 
   useEffect(() => {
     setFilteredData(data);
@@ -45,32 +53,44 @@ function DataProvider({ children }) {
     }
   }, []);
 
-  const handleFilters = useCallback((event) => {
-    event.preventDefault();
-    let higherThan;
-    let lesserThan;
-    let equalTo;
-    switch (comparison) {
-    case 'maior que':
-      higherThan = filteredData
-        .filter((item) => Number(item[column]) > Number(filterValue));
-      setFilteredData(higherThan);
-      break;
-    case 'menor que':
-      lesserThan = filteredData
-        .filter((item) => Number(item[column]) < Number(filterValue));
-      setFilteredData(lesserThan);
-      break;
-    case 'igual a':
-      equalTo = filteredData
-        .filter((item) => Number(item[column]) === Number(filterValue));
-      setFilteredData(equalTo);
-      break;
-    default:
-      break;
-    }
-    setFilters([...filters, { column, comparison, filterValue }]);
-  }, [column, comparison, filterValue, filters, filteredData]);
+  const handleFilters = useCallback(
+    (event) => {
+      event.preventDefault();
+      let higherThan;
+      let lesserThan;
+      let equalTo;
+      switch (comparison) {
+      case 'maior que':
+        higherThan = filteredData
+          .filter((item) => Number(item[column]) > Number(filterValue));
+        setFilteredData(higherThan);
+        break;
+      case 'menor que':
+        lesserThan = filteredData
+          .filter((item) => Number(item[column]) < Number(filterValue));
+        setFilteredData(lesserThan);
+        break;
+      case 'igual a':
+        equalTo = filteredData
+          .filter((item) => Number(item[column]) === Number(filterValue));
+        setFilteredData(equalTo);
+        break;
+      default:
+        break;
+      }
+      setFilters([...filters, { column, comparison, filterValue }]);
+      const filteredComparison = availableColumns.filter((item) => item !== column);
+      setAvailableColumns(filteredComparison);
+    },
+    [
+      column,
+      comparison,
+      filterValue,
+      filters,
+      filteredData,
+      availableColumns,
+    ],
+  );
 
   const value = useMemo(
     () => ({
@@ -88,6 +108,7 @@ function DataProvider({ children }) {
       comparison,
       filterValue,
       handleFilters,
+      availableColumns,
     }),
     [data,
       filteredData,
@@ -103,6 +124,7 @@ function DataProvider({ children }) {
       comparison,
       filterValue,
       handleFilters,
+      availableColumns,
     ],
   );
 

@@ -11,6 +11,7 @@ function FilterForm() {
     filterValue,
     handleFilterChange,
     handleFilters,
+    availableColumns,
   } = useContext(DataContext);
   return (
     <form className="filter-form">
@@ -33,12 +34,13 @@ function FilterForm() {
           value={ column }
           onChange={ handleFilterChange }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {availableColumns.map((item) => (
+            <option key={ item } value={ item }>
+              {item}
+            </option>
+          ))}
         </select>
+
         <select
           id="comparison"
           data-testid="comparison-filter"
