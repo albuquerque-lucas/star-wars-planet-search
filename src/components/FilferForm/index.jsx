@@ -34,11 +34,13 @@ function FilterForm() {
           value={ column }
           onChange={ handleFilterChange }
         >
-          {availableColumns.map((item) => (
-            <option key={ item } value={ item }>
-              {item}
-            </option>
-          ))}
+          {
+            availableColumns.map((item) => (
+              <option key={ item } value={ item }>
+                {item}
+              </option>
+            ))
+          }
         </select>
 
         <select

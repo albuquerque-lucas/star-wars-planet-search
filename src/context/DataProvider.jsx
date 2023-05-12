@@ -59,6 +59,8 @@ function DataProvider({ children }) {
       let higherThan;
       let lesserThan;
       let equalTo;
+      const filteredComparison = availableColumns.filter((item) => item !== column);
+      console.log(filteredComparison);
       switch (comparison) {
       case 'maior que':
         higherThan = filteredData
@@ -79,8 +81,10 @@ function DataProvider({ children }) {
         break;
       }
       setFilters([...filters, { column, comparison, filterValue }]);
-      const filteredComparison = availableColumns.filter((item) => item !== column);
       setAvailableColumns(filteredComparison);
+      setColumn(availableColumns[0]);
+      console.log(column);
+      console.log(filteredComparison);
     },
     [
       column,
