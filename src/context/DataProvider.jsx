@@ -83,8 +83,6 @@ function DataProvider({ children }) {
       setFilters([...filters, { column, comparison, filterValue }]);
       setAvailableColumns(filteredComparison);
       setColumn(availableColumns[0]);
-      console.log(column);
-      console.log(filteredComparison);
     },
     [
       column,
