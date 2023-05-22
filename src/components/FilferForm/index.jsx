@@ -12,7 +12,23 @@ function FilterForm() {
     handleFilterChange,
     handleFilters,
     availableColumns,
+    columnsToFilter,
+    setFilterOrder,
+    filterOrder,
+    handleFilterOrder,
   } = useContext(DataContext);
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setFilterOrder((prevState) => ({
+      ...prevState,
+      order: {
+        ...prevState.order,
+        [name]: value,
+      },
+    }));
+  };
+
   return (
     <form className="filter-form">
       <div className="name-filter">
@@ -66,6 +82,49 @@ function FilterForm() {
         >
           Filtrar
 
+        </button>
+      </div>
+      <div className="order-filters">
+        <select
+          data-testid="column-sort"
+          name="column"
+          onChange={ handleChange }
+        >
+          {
+            columnsToFilter.map((item, index) => (
+              <option key={ index } value={ item }>
+                {item}
+              </option>
+            ))
+          }
+        </select>
+        <div className="radio-btns">
+          <label htmlFor="asc-filter">
+            Ascendente
+            <input
+              type="radio"
+              name="sort"
+              value="ASC"
+              data-testid="column-sort-input-asc"
+              onChange={ handleChange }
+              checked={ filterOrder.order.sort === 'ASC' }
+            />
+
+          </label>
+          <label htmlFor="asc-filter">
+            Descendente
+            <input
+              type="radio"
+              name="sort"
+              value="DESC"
+              data-testid="column-sort-input-desc"
+              onChange={ handleChange }
+              checked={ filterOrder.order.sort === 'DESC' }
+            />
+          </label>
+        </div>
+        <button data-testid="column-sort-button" onClick={ handleFilterOrder }>
+          Ordenar
         </button>
       </div>
     </form>

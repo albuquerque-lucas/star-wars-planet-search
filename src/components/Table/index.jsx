@@ -3,13 +3,21 @@ import DataContext from '../../context/DataContext';
 import './style.css';
 
 function Table() {
-  const { filteredData, isLoading, filterByName, nameValue } = useContext(DataContext);
+  const {
+    filteredData,
+    isLoading,
+    filterByName,
+    nameValue,
+    filters,
+    deleteFilter,
+    removeAllFilters,
+  } = useContext(DataContext);
   const headerItems = filteredData.length > 0
     ? Object.keys(filteredData[0]).filter((item) => item !== 'residents') : [];
   const nameFiltered = filterByName(nameValue);
   const filteredDisplay = nameFiltered.map((item, index) => (
     <tr key={ index }>
-      <td>{item.name}</td>
+      <td data-testid="planet-name">{item.name}</td>
       <td>{item.rotation_period}</td>
       <td>{item.orbital_period}</td>
       <td>{item.diameter}</td>
@@ -32,6 +40,34 @@ function Table() {
   ));
   return (
     <div>
+      <ul className="filter-list">
+        {
+          filters.map((item, index) => (
+            <li
+              key={ index }
+              className="filter-list-item"
+              data-testid="filter"
+            >
+              <p>{`${item.column} - ${item.comparison} - ${item.filterValue}`}</p>
+              {' '}
+              <button
+                data-testid="button-remove-filters"
+                id={ index }
+                onClick={ ({ target }) => deleteFilter(target) }
+              >
+                X
+
+              </button>
+            </li>
+          ))
+        }
+        <li>
+          <button onClick={ removeAllFilters }>
+            Remover Filtros
+          </button>
+        </li>
+      </ul>
+
       {isLoading
         ? <h2>Loading...</h2>
         : (

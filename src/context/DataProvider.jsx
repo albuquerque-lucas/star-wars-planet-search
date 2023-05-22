@@ -11,18 +11,66 @@ function DataProvider({ children }) {
   const [comparison, setComparison] = useState('maior que');
   const [filterValue, setFilterValue] = useState(0);
   const [filters, setFilters] = useState([]);
-  const columnsToFilter = [
+  const columnsToFilter = useMemo(() => [
     'population',
     'orbital_period',
     'diameter',
     'rotation_period',
     'surface_water',
-  ];
+  ], []);
   const [availableColumns, setAvailableColumns] = useState(columnsToFilter);
-
+  const [isToDelete, setIsToDelete] = useState(false);
+  const [filterOrder, setFilterOrder] = useState({ order: {
+    column: 'population',
+    sort: '',
+  },
+  });
   useEffect(() => {
     setFilteredData(data);
   }, [data]);
+
+  useEffect(() => {
+    if (isToDelete) {
+      let filterResult = data;
+      filters.forEach((item) => {
+        switch (item.comparison) {
+        case 'maior que':
+          filterResult = filterResult
+            .filter((element) => Number(element[item.column]) > Number(item.filterValue));
+          break;
+        case 'menor que':
+          filterResult = filterResult
+            .filter((element) => Number(element[item.column]) < Number(item.filterValue));
+          break;
+        case 'igual a':
+          filterResult = filterResult
+            .filter((element) => Number(element[item
+              .column]) === Number(item.filterValue));
+          break;
+        default:
+          break;
+        }
+        setFilteredData(filterResult);
+      });
+      setIsToDelete(false);
+    }
+  }, [isToDelete, filters, data]);
+
+  const handleFilterOrder = useCallback((event) => {
+    event.preventDefault();
+    const { order: { sort, column: filterColumn } } = filterOrder;
+    const resultUnknown = filteredData.filter((item) => item[filterColumn] === 'unknown');
+    const resultMain = filteredData.filter((item) => item[filterColumn] !== 'unknown');
+    if (sort === 'ASC') {
+      const filterAsc = resultMain
+        .sort((a, b) => Number(a[filterColumn] - b[filterColumn]));
+      setFilteredData([...filterAsc, ...resultUnknown]);
+    } else {
+      const filterDesc = resultMain
+        .sort((a, b) => Number(b[filterColumn] - a[filterColumn]));
+      setFilteredData([...filterDesc, ...resultUnknown]);
+    }
+  }, [filterOrder, filteredData]);
 
   const filterByName = useCallback(
     (query) => filteredData.filter(
@@ -60,7 +108,6 @@ function DataProvider({ children }) {
       let lesserThan;
       let equalTo;
       const filteredComparison = availableColumns.filter((item) => item !== column);
-      console.log(filteredComparison);
       switch (comparison) {
       case 'maior que':
         higherThan = filteredData
@@ -71,6 +118,7 @@ function DataProvider({ children }) {
         lesserThan = filteredData
           .filter((item) => Number(item[column]) < Number(filterValue));
         setFilteredData(lesserThan);
+
         break;
       case 'igual a':
         equalTo = filteredData
@@ -94,8 +142,56 @@ function DataProvider({ children }) {
     ],
   );
 
+  const deleteFilter = useCallback(
+    (target) => {
+      setFilteredData(data);
+      const newFilters = filters.filter((item, index) => {
+        if (index === Number(target.id)) {
+          setAvailableColumns([...availableColumns, item.column]);
+        }
+        return index !== Number(target.id);
+      });
+      setFilters(newFilters);
+      setIsToDelete(true);
+    },
+    [filters, availableColumns, data],
+  );
+
+  const removeAllFilters = useCallback(
+    () => {
+      setFilteredData(data);
+      setFilters([]);
+      setAvailableColumns(columnsToFilter);
+    },
+    [data, columnsToFilter],
+  );
+
   const value = useMemo(
-    () => ({
+    () => (
+      {
+        data,
+        filteredData,
+        error,
+        isLoading,
+        nameValue,
+        handleTextChange,
+        filterByName,
+        filters,
+        setFilters,
+        handleFilterChange,
+        column,
+        comparison,
+        filterValue,
+        handleFilters,
+        availableColumns,
+        deleteFilter,
+        removeAllFilters,
+        columnsToFilter,
+        filterOrder,
+        setFilterOrder,
+        handleFilterOrder,
+      }),
+    [
       data,
       filteredData,
       error,
@@ -111,22 +207,12 @@ function DataProvider({ children }) {
       filterValue,
       handleFilters,
       availableColumns,
-    }),
-    [data,
-      filteredData,
-      error,
-      isLoading,
-      nameValue,
-      handleTextChange,
-      filterByName,
-      filters,
-      setFilters,
-      handleFilterChange,
-      column,
-      comparison,
-      filterValue,
-      handleFilters,
-      availableColumns,
+      deleteFilter,
+      removeAllFilters,
+      columnsToFilter,
+      filterOrder,
+      setFilterOrder,
+      handleFilterOrder,
     ],
   );
 
