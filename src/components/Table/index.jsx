@@ -51,7 +51,6 @@ function Table() {
               <p>{`${item.column} - ${item.comparison} - ${item.filterValue}`}</p>
               {' '}
               <button
-                data-testid="button-remove-filters"
                 id={ index }
                 onClick={ ({ target }) => deleteFilter(target) }
               >
@@ -62,7 +61,7 @@ function Table() {
           ))
         }
         <li>
-          <button onClick={ removeAllFilters }>
+          <button onClick={ removeAllFilters } data-testid="button-remove-filters">
             Remover Filtros
           </button>
         </li>
