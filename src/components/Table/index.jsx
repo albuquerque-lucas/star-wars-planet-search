@@ -55,7 +55,6 @@ function Table() {
                 onClick={ ({ target }) => deleteFilter(target) }
               >
                 X
-
               </button>
             </li>
           ))
