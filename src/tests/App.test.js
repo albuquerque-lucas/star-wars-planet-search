@@ -10,7 +10,7 @@ describe('Testes RTL da aplicação', () => {
     jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
   });
 
-  test('Verifica o componente Table', async () => {
+  test('Verifica a função handleFilterChange', async () => {
     render(
       <DataProvider>
         <App />
