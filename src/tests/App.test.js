@@ -174,32 +174,6 @@ describe('Testes RTL da aplicação', () => {
       const sortedColumnSort = screen.getAllByTestId('planet-name');
       expect(sortedColumnSort[0].textContent).toBe('Kamino');
     })
-
-  // test('Testa a função handleFilterOrder', async () => {
-  //   global.fetch = jest.fn(() => Promise.resolve({
-  //     json: () => Promise.resolve(testData.results),
-  //   }))
-  //   render(
-  //     <DataProvider>
-  //       <App/>
-  //     </DataProvider>
-  //   )
-
-  //   const columnSort = screen.getByTestId('column-sort');
-  //   userEvent.selectOptions(columnSort, 'rotation_period');
-
-  //   const ascRadioBtn = screen.getByLabelText(/ascendente/i);
-  //   userEvent.click(ascRadioBtn);
-  //   const sortBtn = screen.getByRole('button', {
-  //     name: /ordenar/i
-  //   });
-  //   userEvent.click(sortBtn);
-
-  //   await waitFor(() =>{
-  //     expect(screen.getAllByTestId('planet-name')[0].textContent).toBe('Bespin');
-  //     // expect(planetNames[0].textContent).toBe('Bespin');
-  //   })
-  // })
 });
 
 
