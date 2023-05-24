@@ -5,12 +5,12 @@ import './style.css';
 function Table() {
   const {
     filteredData,
-    isLoading,
     filterByName,
     nameValue,
     filters,
     deleteFilter,
     removeAllFilters,
+    error,
   } = useContext(DataContext);
   const headerItems = filteredData.length > 0
     ? Object.keys(filteredData[0]).filter((item) => item !== 'residents') : [];
@@ -65,9 +65,8 @@ function Table() {
           </button>
         </li>
       </ul>
-
-      {isLoading
-        ? <h2>Loading...</h2>
+      { error
+        ? <h1>Não foi possível concluir a solicitação</h1>
         : (
           <table className="planet-table">
             <thead>
@@ -87,6 +86,7 @@ function Table() {
 
           </table>
         )}
+
     </div>
   );
 }

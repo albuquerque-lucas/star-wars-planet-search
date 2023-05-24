@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { render, renderHook, screen, waitFor, within } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import DataProvider from '../context/DataProvider';
+import DataProvider, {handleFilterOrder} from '../context/DataProvider';
 import App from '../App';
 import userEvent from '@testing-library/user-event';
 import mockFetch from '../../cypress/mocks/fetch';
 import testData from '../../cypress/mocks/testData';
-import useFetch from '../hooks/useFetch';
 import Table from '../components/Table';
 
 describe('Testes RTL da aplicação', () => {
@@ -111,59 +110,96 @@ describe('Testes RTL da aplicação', () => {
     expect(updatedDeleteButtons).toHaveLength(0);
   })
 
-  test('define o erro corretamente ao fazer uma requisição com erro', async () => {
-    const mockError = 'Erro ao fazer a requisição';
-    const mockFetch = jest.fn().mockResolvedValueOnce({
-      ok: false,
-      json: async () => ({ message: mockError }),
-    });
-    global.fetch = mockFetch;
-  
-    let result;
+  test('Exibe uma mensagem de erro caso falhe na requisição', async () => {
+    const mockError = 'Não foi possível concluir a solicitação';
+    jest.spyOn(global, 'fetch').mockRejectedValue(new Error(mockError));
 
-    act(() => {
-      const { result: hookResult } = renderHook(() => useFetch('https://swapi.dev/api/planets'));
-      result = hookResult;
-    });
-  
-    expect(result.current.data).toEqual([]);
-    expect(result.current.isLoading).toBe(true);
-    expect(result.current.error).toBe(null);
-  
-    await waitFor(() => {
-      return !result.current.isLoading;
-    });
-  
-    act(() => {
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.data).toEqual([]);
-      expect(result.current.error).toBe(mockError);
-    });
-  
-    expect(mockFetch).toHaveBeenCalledWith('https://swapi.dev/api/planets');
-  });
-
-  test('Testa a função handleFilterOrder', () => {
     render(
       <DataProvider>
         <App/>
       </DataProvider>
     )
+      const errorMessage = await screen.findByText(mockError);
+      expect(errorMessage).toBeInTheDocument();
+    })
 
-    const columnSort = screen.getByTestId('column-sort');
-    userEvent.selectOptions(columnSort, 'rotation_period');
+    test('Verifica se a ordenação ascendente dos elementos é acionada corretamente', async () => {
+      act(() => {
+        render(
+          <DataProvider>
+            <App/>
+          </DataProvider>
+        )
+      })
 
-    const ascRadioBtn = screen.getByText(/ascendente/i);
-    const radioBtn = within(ascRadioBtn).getByRole('radio');
-    userEvent.click(radioBtn);
+      const planetNames = await screen.findAllByTestId('planet-name');
+      expect(planetNames[0].textContent).toBe('Tatooine');
 
-    const sortBtn = screen.getByRole('button', {
-      name: /ordenar/i
-    });
-    userEvent.click(sortBtn);
+      const columnSort = screen.getByTestId('column-sort');
+      userEvent.selectOptions(columnSort, 'rotation_period');
 
-    const planetNames = screen.getAllByTestId('planet-name');
-  })
+      const ascRadioBtn = screen.getByLabelText(/ascendente/i);
+      userEvent.click(ascRadioBtn);
+      const sortBtn = screen.getByRole('button', {
+        name: /ordenar/i
+      });
+      userEvent.click(sortBtn);
+
+      const sortedColumnSort = screen.getAllByTestId('planet-name');
+      expect(sortedColumnSort[0].textContent).toBe('Bespin');
+    })
+
+    test('Verifica se a ordenação ascendente dos elementos é acionada corretamente', async () => {
+      act(() => {
+        render(
+          <DataProvider>
+            <App/>
+          </DataProvider>
+        )
+      })
+
+      const planetNames = await screen.findAllByTestId('planet-name');
+      expect(planetNames[0].textContent).toBe('Tatooine');
+
+      const columnSort = screen.getByTestId('column-sort');
+      userEvent.selectOptions(columnSort, 'rotation_period');
+
+      const ascRadioBtn = screen.getByLabelText(/descendente/i);
+      userEvent.click(ascRadioBtn);
+      const sortBtn = screen.getByRole('button', {
+        name: /ordenar/i
+      });
+      userEvent.click(sortBtn);
+
+      const sortedColumnSort = screen.getAllByTestId('planet-name');
+      expect(sortedColumnSort[0].textContent).toBe('Kamino');
+    })
+
+  // test('Testa a função handleFilterOrder', async () => {
+  //   global.fetch = jest.fn(() => Promise.resolve({
+  //     json: () => Promise.resolve(testData.results),
+  //   }))
+  //   render(
+  //     <DataProvider>
+  //       <App/>
+  //     </DataProvider>
+  //   )
+
+  //   const columnSort = screen.getByTestId('column-sort');
+  //   userEvent.selectOptions(columnSort, 'rotation_period');
+
+  //   const ascRadioBtn = screen.getByLabelText(/ascendente/i);
+  //   userEvent.click(ascRadioBtn);
+  //   const sortBtn = screen.getByRole('button', {
+  //     name: /ordenar/i
+  //   });
+  //   userEvent.click(sortBtn);
+
+  //   await waitFor(() =>{
+  //     expect(screen.getAllByTestId('planet-name')[0].textContent).toBe('Bespin');
+  //     // expect(planetNames[0].textContent).toBe('Bespin');
+  //   })
+  // })
 });
 
 

@@ -1,10 +1,10 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DataContext from './DataContext';
-import useFetch from '../hooks/useFetch';
 
 function DataProvider({ children }) {
-  const { data, error, isLoading } = useFetch('https://swapi.dev/api/planets');
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [nameValue, setNameValue] = useState('');
   const [column, setColumn] = useState('population');
@@ -25,9 +25,21 @@ function DataProvider({ children }) {
     sort: '',
   },
   });
+
+  const fetchPlanetData = async () => {
+    try {
+      const response = await fetch('https://swapi.dev/api/planets');
+      const dataResponse = await response.json();
+      setData(dataResponse.results);
+      setFilteredData(dataResponse.results);
+    } catch (erro) {
+      setError(erro);
+    }
+  };
+
   useEffect(() => {
-    setFilteredData(data);
-  }, [data]);
+    fetchPlanetData();
+  }, []);
 
   useEffect(() => {
     if (isToDelete) {
@@ -172,7 +184,6 @@ function DataProvider({ children }) {
         data,
         filteredData,
         error,
-        isLoading,
         nameValue,
         handleTextChange,
         filterByName,
@@ -195,7 +206,6 @@ function DataProvider({ children }) {
       data,
       filteredData,
       error,
-      isLoading,
       nameValue,
       handleTextChange,
       filterByName,

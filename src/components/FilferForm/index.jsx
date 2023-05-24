@@ -105,18 +105,20 @@ function FilterForm() {
               type="radio"
               name="sort"
               value="ASC"
+              id="asc-filter"
               data-testid="column-sort-input-asc"
               onChange={ handleChange }
               checked={ filterOrder.order.sort === 'ASC' }
             />
 
           </label>
-          <label htmlFor="asc-filter">
+          <label htmlFor="desc-filter">
             Descendente
             <input
               type="radio"
               name="sort"
               value="DESC"
+              id="desc-filter"
               data-testid="column-sort-input-desc"
               onChange={ handleChange }
               checked={ filterOrder.order.sort === 'DESC' }
