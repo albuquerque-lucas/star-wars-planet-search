@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
-import { render, renderHook, screen, waitFor, within } from '@testing-library/react';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import DataProvider, {handleFilterOrder} from '../context/DataProvider';
 import App from '../App';
 import userEvent from '@testing-library/user-event';
 import mockFetch from '../../cypress/mocks/fetch';
-import testData from '../../cypress/mocks/testData';
-import Table from '../components/Table';
 
 describe('Testes RTL da aplicação', () => {
   beforeEach(()=> {
@@ -149,7 +147,7 @@ describe('Testes RTL da aplicação', () => {
       expect(sortedColumnSort[0].textContent).toBe('Bespin');
     })
 
-    test('Verifica se a ordenação ascendente dos elementos é acionada corretamente', async () => {
+    test('Verifica se a ordenação descendente dos elementos é acionada corretamente', async () => {
       act(() => {
         render(
           <DataProvider>
@@ -173,6 +171,64 @@ describe('Testes RTL da aplicação', () => {
 
       const sortedColumnSort = screen.getAllByTestId('planet-name');
       expect(sortedColumnSort[0].textContent).toBe('Kamino');
+    })
+
+    test('Testa a função handleFilters', async () => {
+      act(() => {
+        render(
+          <DataProvider>
+            <App/>
+          </DataProvider>
+        )
+      })
+      const planetNames = await screen.findAllByTestId('planet-name');
+      expect(planetNames.length).toBe(10);
+
+      const columnFilter = screen.getByTestId('column-filter');
+      const comparisonFilter = screen.getByTestId('comparison-filter');
+      const valueFilter = screen.getByTestId('value-filter');
+      const filterBtn = screen.getByRole('button', {
+        name: /filtrar/i
+      });
+
+
+      userEvent.selectOptions(columnFilter, 'diameter');
+      userEvent.selectOptions(comparisonFilter, 'maior que');
+      userEvent.type(valueFilter, '9000');
+      userEvent.click(filterBtn);
+
+      const updatedPlanetNames1 = screen.getAllByTestId('planet-name');
+      expect(updatedPlanetNames1.length).toBe(7);
+
+      userEvent.clear(valueFilter);
+      userEvent.selectOptions(columnFilter, 'population');
+      userEvent.selectOptions(comparisonFilter, 'menor que');
+      userEvent.type(valueFilter, '1000000');
+      userEvent.click(filterBtn);
+
+      const updatedPlanetNames2 = screen.getAllByTestId('planet-name');
+      expect(updatedPlanetNames2.length).toBe(2);
+
+      userEvent.clear(valueFilter);
+      userEvent.selectOptions(columnFilter, 'rotation_period');
+      userEvent.selectOptions(comparisonFilter, 'igual a');
+      userEvent.type(valueFilter, '23');
+      userEvent.click(filterBtn);
+
+      const updatedPlanetNames3 = screen.getAllByTestId('planet-name');
+      expect(updatedPlanetNames3.length).toBe(1);
+    })
+
+    test('Testa o caso default de handleFilterChange', () => {
+      act(() => {
+        render(
+          <DataProvider>
+            <App/>
+          </DataProvider>
+        )
+      })
+
+      
     })
 });
 
