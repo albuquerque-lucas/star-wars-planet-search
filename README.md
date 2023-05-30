@@ -1,12 +1,10 @@
 # Star Wars Planet Search
 
-🌌 **What is it about?**
+🌌 **Project Overview - What's it about?**
 
-Star Wars Planet Search is a web application that lists planets from the Star Wars universe, allowing users to filter the data according to their preferences. The aim of this project was to develop and test the application of filters using Hooks and Context API in the React environment. This application was the final project created during the Front-End curriculum at Trybe - School of Programming.
+Welcome to the Star Wars Planet Search project! This web application allows users to explore and filter planets from the vast Star Wars universe based on their preferences. It was developed as part of a programming course, wich was Trybe - Escola de Programação Online, where each participant created their own version of the project. This is my personal take on it, adding my own touch to the application.
 
-## Technologies Used
-
-🚀 Star Wars Planet Search was developed using the following technologies:
+🚀 Some technologies i've used:
 
 - **React:** A JavaScript library for building interactive user interfaces.
 - **Hooks:** React features that allow using state and other React features in functional components.
@@ -15,7 +13,7 @@ Star Wars Planet Search is a web application that lists planets from the Star Wa
 
 ## Installation
 
-🛠️ To run Star Wars Planet Search locally, follow the steps below:
+🛠️ Want to try it out yourself? No problemo! Just follow these steps:
 
 1. Clone the repository: `git clone https://github.com/your-username/star-wars-planet-search.git`
 2. Navigate to the project directory: `cd star-wars-planet-search`
@@ -25,7 +23,7 @@ Star Wars Planet Search is a web application that lists planets from the Star Wa
 
 ## Usage
 
-💡 After installation, follow these instructions to use Star Wars Planet Search:
+💡 Once you have the Star Wars Planet Search up and running, here's how you can use it:
 
 1. Open your browser and access the application: `http://localhost:3000`
 2. Use the search bar to find planets by name.
@@ -38,10 +36,14 @@ Star Wars Planet Search is a web application that lists planets from the Star Wa
 
 ## Contribution
 
-🤝 Star Wars Planet Search is an open-source project, and we encourage contributions from the community! If you would like to contribute, follow these steps:
+🤝 And if you're feeling inspired and just so you know, this project is open-source, so any contributions are more than welcome! Just follow these steps:
 
-1. Open an issue describing the feature you would like to add or the problem you would like to solve.
-2. Fork the repository and create a new branch with a descriptive name: `git checkout -b your-branch-name`
-3. Make the necessary changes in your fork.
-4. Submit a pull request with a detailed description of the changes made.
-5. Await feedback and review from the collaborators.
+1. Open up an issue and tell me your cool ideas or the problems you want to tackle.
+2. Fork the repository and create your own branch with a descriptive name like `git checkout -b your-branch-name`.
+3. Implement the necessary changes in your fork.
+4. Send me a pull request with a detailed description of what you did.
+5. Then, it's my turn to review and provide feedback. Let's make this project even better together!
+
+That's it! While this project may not be groundbreaking, it represents my own personal effort and approach to building the Star Wars Planet Search application. If you have any questions or need further assistance, feel free to reach out.
+
+May the Force be with you 😉
