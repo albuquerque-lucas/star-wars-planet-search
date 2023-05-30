@@ -11,7 +11,7 @@ Star Wars Planet Search is a web application that lists planets from the Star Wa
 - **React:** A JavaScript library for building interactive user interfaces.
 - **Hooks:** React features that allow using state and other React features in functional components.
 - **Context API:** A React feature that allows sharing data between components without the need to pass props manually.
-- **Star Wars API:** We used the public Star Wars API to retrieve the planet data.
+- **Star Wars API:** We used the [Star Wars API](https://swapi.dev/api/planets) to retrieve the planet data.
 
 ## Installation
 
@@ -31,6 +31,10 @@ Star Wars Planet Search is a web application that lists planets from the Star Wa
 2. Use the search bar to find planets by name.
 3. Utilize the available filters to refine your search based on specific characteristics such as climate, terrain, population, and more.
 4. The results will automatically update as you apply the filters.
+
+## Test Coverage
+
+✅ Star Wars Planet Search has been tested using React Testing Library.
 
 ## Contribution
 
